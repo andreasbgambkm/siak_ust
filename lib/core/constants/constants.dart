@@ -1,0 +1,12 @@
+const String BASE_URL = "http://20.213.87.108/siak/public/api";
+const String LOGIN = "/login";
+const String REGISTER = "/register";
+const String GET_USER_PROFILE = "/profile";
+const String LOGOUT = "/logout";
+const String INFO_TERKINI = "/infoterkini";
+const String siakDesc =" Sistem Informasi untuk mengelola administrasi data akademik padafakultas/program studi. Aplikasi ini mendukung perubahan kurikulum akademik. Sistem ini juga mendukung sepenuhnya KRS online dan bimbingan akademik online.";
+const String logoUnika = "assets/images/logoust.png";
+const String siakTitle = "SISTEM INFORMASI AKADEMIK";
+const String textFieldUsername = "Username";
+const String textFieldPassword = "Password";
+const String loginTitle = "LOGIN";

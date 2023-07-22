@@ -1,0 +1,113 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\ProfileMahasiswa;
+use App\Models\SuratAktif;
+use App\Models\TahunAjaran;
+use App\Functions\KodeProdiFunction;
+use Illuminate\Http\Request;
+
+class SuratAktifKuliahController extends Controller
+{
+    public function show()
+    {
+        $uid = auth('sanctum')->user()->id;
+        $profile = ProfileMahasiswa::where('npm', $uid)->first();
+        $npm = $profile->npm;
+        $nama = $profile->nm_mhs;
+        $kdfakultas = $profile->fakultas;
+        $kdprodi = $profile->kd_prodi;
+        $kode = new KodeProdiFunction();
+        $prodi = $kode->prodi($kdprodi);
+        $fakultas = $kode->fakultas($kdfakultas);
+
+        $suratAktif = SuratAktif::where('npm', $npm)->get();
+
+
+        $response = [
+            'user' => [
+                'npm' => $npm,
+                'nama' => $nama,
+                'fakultas' => $fakultas,
+                'prodi' => $prodi
+            ],
+            'surat_aktif' => $suratAktif,
+        ];
+
+        return response()->json($response, 200);
+    }
+
+    public function store(Request $request)
+    {
+        $uid = auth('sanctum')->user()->id;
+        $profile = ProfileMahasiswa::where('npm', $uid)->first();
+        $npm = $profile->npm;
+        $nama = $profile->nm_mhs;
+        $now = date('Y-m-d H:i:s');
+        date_default_timezone_set('Asia/Jakarta');
+        $date = date('Y-m-d');
+        $tahunAjaran = TahunAjaran::where('status', 'A')->first();
+        $idTa = $tahunAjaran->id_ta;
+        $validatedData = $request->validate([
+            'nmortu' => 'required|string',
+            'keperluan' => 'required|string',
+
+        ]);
+
+        $surat = SuratAktif::where('NPM', $npm)->first();
+
+        if ($surat) {
+            // Jika sudah ada, lakukan proses pengeditan
+            $surat->tgl_daftar = $now;
+            $surat->lampiran = $lampiran;
+
+            $surat->save();
+        } else {
+            // Jika belum ada, buat data surat riset baru
+
+            $surat = new SuratAktif();
+            $surat->ID_Surat  = 'A-01';
+            $surat->NPM = $npm;
+            $surat->Tanggal = $date;
+            $surat->No_Surat = '';
+            $surat->tgl_surat = $now;
+            $surat->ta = $idTa;
+            $surat->nmortu = $request->input('nmortu');
+            $surat->keperluan = $request->input('keperluan');
+
+
+            $surat->save();
+        }
+
+
+        return response()->json([
+            'message' =>"Surat Aktif Kuliah Berhasil diinput.Silahkan hubungi Tata Usaha!",
+        ], 200);
+
+    }
+
+    // public function edit(Request $request, $keperluan)
+    // {
+    //     $validatedData = $request->validate([
+    //         'nmortu' => 'required|string',
+    //         'keperluan' => 'required|string',
+    //     ]);
+
+    //     $surat = SuratAktif::find($keperluan);
+
+    //     if (!$surat) {
+    //         return response()->json(['message' => 'Surat Aktif not found'], 404);
+    //     }
+
+    //     $surat->nmortu = $request->input('nmortu');
+    //     $surat->keperluan = $request->input('keperluan');
+
+    //     $surat->save();
+
+    //     return response()->json([
+    //         'message' => 'Surat Aktif Kuliah berhasil diubah.',
+    //         'surat' => $surat
+    //     ], 200);
+    // }
+}

@@ -9,7 +9,8 @@ class SiakKRSDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: SfPdfViewer.network(urlPdf),
+
+      child: SfPdfViewer.network(urlPdf, canShowPaginationDialog: true,),
     );
   }
 }

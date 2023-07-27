@@ -1,39 +1,63 @@
-// To parse this JSON data, do
-//
-//     final krs = krsFromJson(jsonString);
-
-import 'dart:convert';
-
 import 'package:siak/model/siak_models/mahasiswa_model.dart';
 
-List<Krs> krsFromJson(String str) => List<Krs>.from(json.decode(str).map((x) => Krs.fromJson(x)));
+class Krs extends ProfileMahasiswa {
+  UserKrs user;
+  List<Combobox> combobox;
 
-String krsToJson(List<Krs> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+  Krs({required this.user, required this.combobox});
 
-class Krs extends ProfileMahasiswa{
-  Krs({
-    required this.thnAjaran,
-    required this.idKrs,
+  factory Krs.fromJson(Map<String?, dynamic> json) {
+    return Krs(
+      user: UserKrs.fromJson(json['user']),
+      combobox: json['combobox'] != null
+          ? List<Combobox>.from(json['combobox'].map((x) => Combobox.fromJson(x)))
+          : [],
 
-    required this.ips,
+    );
+  }
+}
+
+class UserKrs {
+  int? npm;
+  String? nama;
+  String? prodi;
+  int? semesterBerjalan;
+  String? ipSemesterSebelum;
+  int? maksSks;
+
+  UserKrs({
+    required this.npm,
+    required this.nama,
+    required this.prodi,
+    required this.semesterBerjalan,
+    required this.ipSemesterSebelum,
+    required this.maksSks,
   });
 
-  String thnAjaran;
-  String idKrs;
+  factory UserKrs.fromJson(Map<String, dynamic> json) {
+    return UserKrs(
+      npm: json['npm'],
+      nama: json['nama'],
+      prodi: json['prodi'],
+      semesterBerjalan: json['semester_berjalan'],
+      ipSemesterSebelum: json['ipsemestersebelum'],
+      maksSks: json['maks_SKS'],
+    );
+  }
+}
 
-  String ips;
+class Combobox {
+  String id;
+  String tahunAjaran;
+  String semester;
 
-  factory Krs.fromJson(Map<String, dynamic> json) => Krs(
-    thnAjaran: json["thn_ajaran"],
-    idKrs: json["id_krs"],
+  Combobox({required this.id, required this.tahunAjaran, required this.semester});
 
-    ips: json["ips"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "thn_ajaran": thnAjaran,
-    "id_krs": idKrs,
-    "npm": npm,
-    "ips": ips,
-  };
+  factory Combobox.fromJson(Map<String, dynamic> json) {
+    return Combobox(
+      id: json['id'],
+      tahunAjaran: json['tahun_ajaran'],
+      semester: json['semester'],
+    );
+  }
 }

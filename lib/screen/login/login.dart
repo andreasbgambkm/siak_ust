@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
@@ -64,48 +63,59 @@ class _LoginState extends State<SiakLogin> {
   }
 
 
-  _onPressed() {
+  void _onPressed() async {
     setState(() {
-      if (siakUserController.text.trim().toLowerCase().isNotEmpty && siakPasswordController.text.trim().isNotEmpty) {
-        databaseHelper.loginData(context, siakUserController.text.trim().toLowerCase(),
-            siakPasswordController.text.trim()).whenComplete(() {
-          if (databaseHelper.status != null && databaseHelper.status) {
-            _showDialog();
-            msgStatus = 'Check username or password';
-          } else {
-            Navigator.pushReplacementNamed(context, '/home_screen');
-          }
+      if (siakUserController.text.trim().toLowerCase().isNotEmpty &&
+          siakPasswordController.text.trim().isNotEmpty) {
+        setState(() {
+          isApiCallProcess = true;
         });
       } else {
-        //Menampilkan keterangan jika username atau password kosong
         if (siakUserController.text.trim().toLowerCase().isEmpty) {
-          siakUserController.clear();
-          siakUserController.value = TextEditingValue(
-            text: '',
-            selection: TextSelection.collapsed(offset: -1),
-          );
-          siakUserController;
           _showErrorSnackBar('Username tidak boleh kosong');
+          return;
         } else if (siakPasswordController.text.trim().isEmpty) {
-          siakPasswordController.clear();
-          siakPasswordController.value = TextEditingValue(
-            text: '',
-            selection: TextSelection.collapsed(offset: -1),
-          );
-          siakPasswordController;
           _showErrorSnackBar('Password tidak boleh kosong');
+          return;
         }
       }
     });
-  }
 
+    try {
+
+      final loggedIn = await databaseHelper.loginData(
+        context,
+        siakUserController.text.trim().toLowerCase(),
+        siakPasswordController.text.trim(),
+      );
+
+      setState(() {
+        isApiCallProcess = false;
+      });
+
+      if (loggedIn) {
+        Navigator.pushReplacementNamed(context, '/home_screen');
+      } else {
+        _showAlertDialog(context, 'Username atau password salah');
+      }
+    } catch (e) {
+      // Terjadi error saat melakukan login
+      setState(() {
+        isApiCallProcess = false;
+      });
+      _showErrorSnackBar('Terjadi kesalahan saat login');
+    }
+  }
 
   void _showErrorSnackBar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(message),
-      backgroundColor: Colors.red,
+      backgroundColor: SiakColors.SiakPrimary,
     ));
   }
+
+
+
 
 
   _showAlertDialog(BuildContext context, String err) {
@@ -273,31 +283,37 @@ class _LoginState extends State<SiakLogin> {
                       ),
                     ),
                     Padding(
-                        padding: const EdgeInsets.only(
-                            top: 20, left: 20, right: 20),
-                        child: Container(
-                          child: MaterialButton(
-                            elevation: 0,
-                            hoverElevation: 0,
-                            focusElevation: 0,
-                            highlightElevation: 0,
-                            color: Color(0xFFFFE76A),
-                            height: 50,
-                            minWidth: double.infinity,
-                            // color: Colors.deepOrange,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5.0)),
-
-                            onPressed: _onPressed,
-
-                            child: Text(loginTitle,
-                                style: GoogleFonts.poppins(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20,
-                                    color: SiakColors.SiakPrimary,
-                                    letterSpacing: 2)),
+                      padding: const EdgeInsets.only(
+                          top: 20, left: 20, right: 20, bottom: 10),
+                      child: Container(
+                        child: MaterialButton(
+                          elevation: 0,
+                          hoverElevation: 0,
+                          focusElevation: 0,
+                          highlightElevation: 0,
+                          color: Color(0xFFFFE76A),
+                          height: 50,
+                          minWidth: double.infinity,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5.0),
                           ),
-                        )
+                          onPressed: isApiCallProcess ? null : _onPressed,
+                          child: isApiCallProcess
+                              ? CircularProgressIndicator(
+                            valueColor:
+                            AlwaysStoppedAnimation<Color>(SiakColors.SiakPrimary),
+                          )
+                              : Text(
+                            loginTitle,
+                            style: GoogleFonts.poppins(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                              color: SiakColors.SiakPrimary,
+                              letterSpacing: 2,
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
                     Container(
                       padding: EdgeInsets.only(top: 15),

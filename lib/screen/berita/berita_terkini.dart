@@ -1,9 +1,3 @@
-// Copyright 2013 The Flutter Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
-// ignore_for_file: public_member_api_docs
-
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
@@ -77,7 +71,8 @@ const String kTransparentBackgroundPage = '''
 ''';
 
 class SiakNews extends StatefulWidget {
-  const SiakNews({super.key});
+  final String? urlBerita;
+  const SiakNews({super.key, this.urlBerita});
 
   @override
   State<SiakNews> createState() => _SiakNewsState();
@@ -122,15 +117,14 @@ class _SiakNewsState extends State<SiakNews> {
           },
           onWebResourceError: (WebResourceError error) {
             debugPrint('''
-Page resource error:
-  code: ${error.errorCode}
+Page resource error:code: ${error.errorCode}
   description: ${error.description}
   errorType: ${error.errorType}
   isForMainFrame: ${error.isForMainFrame}
           ''');
           },
           onNavigationRequest: (NavigationRequest request) {
-            if (request.url.startsWith('https://www.ust.ac.id/kabar-unika/')) {
+            if (request.url.startsWith(widget.urlBerita!)) {
               debugPrint('blocking navigation to ${request.url}');
               return NavigationDecision.prevent;
             }
@@ -150,7 +144,7 @@ Page resource error:
           );
         },
       )
-      ..loadRequest(Uri.parse('https://www.ust.ac.id/kabar-unika/'));
+      ..loadRequest(Uri.parse(widget.urlBerita!));
 
     // #docregion platform_features
     if (controller.platform is AndroidWebViewController) {
@@ -191,7 +185,7 @@ Page resource error:
           );
         }
       },
-      child: const Icon(Icons.favorite),
+      child: const Icon(Icons.favorite, color: SiakColors.SiakPrimary,),
     );
   }
 }
@@ -457,9 +451,7 @@ class SampleMenu extends StatelessWidget {
 
   static Future<String> _prepareLocalFile() async {
     final String tmpDir = (await getTemporaryDirectory()).path;
-    final File indexFile = File(
-        <String>{tmpDir, 'www', 'index.html'}.join(Platform.pathSeparator));
-
+    final File indexFile = File(<String>{tmpDir, 'www', 'index.html'}.join(Platform.pathSeparator));
     await indexFile.create(recursive: true);
     await indexFile.writeAsString(kLocalExamplePage);
 

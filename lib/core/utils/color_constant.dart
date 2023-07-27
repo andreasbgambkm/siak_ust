@@ -26,6 +26,8 @@ class ColorConstant {
 
   static Color gray100 = fromHex('#f5f5f5');
 
+
+
   static Color fromHex(String hexString) {
     final buffer = StringBuffer();
     if (hexString.length == 6 || hexString.length == 7) buffer.write('ff');

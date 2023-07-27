@@ -12,6 +12,7 @@ class SiakColors {
   static const SiakGreenDark = Color(0xFF159900);
   static const SiakBlueLight = Color.fromARGB(255, 39, 135, 224);
 
+
   static Color gray700 = fromHex('#555555');
 
   static Color gray500 = fromHex('#9b9b9b');
@@ -32,11 +33,21 @@ class SiakColors {
 
   static Color gray100 = fromHex('#f5f5f5');
 
+  static Color gray600 = fromHex('#7f7f7f');
+
+  static Color yellow300 = fromHex('#ffe769');
+
+  static Color siakGreenDarkKrs = fromHex('#159900');
+
+
+
+
   static Color fromHex(String hexString) {
     final buffer = StringBuffer();
     if (hexString.length == 6 || hexString.length == 7) buffer.write('ff');
     buffer.write(hexString.replaceFirst('#', ''));
     return Color(int.parse(buffer.toString(), radix: 16));
+
   }
 
 

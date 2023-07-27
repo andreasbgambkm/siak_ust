@@ -5,6 +5,7 @@ import 'package:siak/core/utils/color_pallete.dart';
 import 'package:siak/model/RestAPI/user_login_api.dart';
 import 'package:siak/model/siak_models/mahasiswa_model.dart';
 import 'package:siak/widgets/app_bar/siakappbar.dart';
+import 'package:siak/widgets/custom_bottomsheet.dart';
 import 'package:siak/widgets/customdrawer.dart';
 
 
@@ -26,7 +27,7 @@ class _SiakProfileState extends State<SiakProfile> {
   @override
   void initState() {
     super.initState();
-    _getData();
+    // _getData();
     _loadProfileDataFromLocal();
   }
 
@@ -136,7 +137,7 @@ class _SiakProfileState extends State<SiakProfile> {
           children: [
             Text(
               "Profile Mahasiswa",
-              style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
+              style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500,),
             ),
             SizedBox(height: 15),
 
@@ -173,39 +174,15 @@ class _SiakProfileState extends State<SiakProfile> {
                       isLocationEditable = false;
                     });
                   },
-                  child: const Text(
-                    "CANCEL",
-                    style: TextStyle(
-                      fontSize: 14,
-                      letterSpacing: 2.2,
-                      color: SiakColors.SiakBlack,
-                    ),
-                  ),
+
                 ),
-                MaterialButton(
-                  onPressed: () {
-                    _updateData();
-                  },
-                  color: SiakColors.SiakPrimary,
-                  padding: EdgeInsets.symmetric(horizontal: 50),
-                  elevation: 2,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Text(
-                    "SAVE",
-                    style: TextStyle(
-                      fontSize: 14,
-                      letterSpacing: 2.2,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
+
               ],
             ),
           ],
         ),
       ),
+      bottomSheet: SiakBottomSheet(),
     );
   }
 
@@ -222,12 +199,12 @@ class _SiakProfileState extends State<SiakProfile> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              buildTextField("NPM", _profileMahasiswa!.npm.toString() ?? '', false, Icons.card_membership),
-              buildTextField("Nama", _profileMahasiswa!.nama.toString() ?? '', false, Icons.person),
-              buildTextField("Tempat Lahir", _profileMahasiswa!.tempatLahir.toString() ?? '', false, Icons.home_mini),
-              buildTextField("Tanggal Lahir", _profileMahasiswa!.tanggalLahir.toString() ?? '', false, Icons.date_range),
-              buildTextField("Jenis Kelamin", _profileMahasiswa!.jenisKelamin.toString() ?? '', false, Icons.man),
-              buildTextField("Agama", _profileMahasiswa!.agama.toString() ?? '', false, Icons.church),
+              buildTextField("NPM", _profileMahasiswa?.npm.toString() ?? '', false, Icons.card_membership),
+              buildTextField("Nama", _profileMahasiswa?.nama.toString() ?? '', false, Icons.person),
+              buildTextField("Tempat Lahir", _profileMahasiswa?.tempatLahir.toString() ?? '', false, Icons.home_mini),
+              buildTextField("Tanggal Lahir", _profileMahasiswa?.tanggalLahir.toString() ?? '', false, Icons.date_range),
+              buildTextField("Jenis Kelamin", _profileMahasiswa?.jenisKelamin.toString() ?? '', false, Icons.man),
+              buildTextField("Agama", _profileMahasiswa?.agama.toString() ?? '', false, Icons.church),
             ],
           ),
         ),
@@ -255,11 +232,11 @@ class _SiakProfileState extends State<SiakProfile> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                buildTextField("Provinsi", _profileMahasiswa!.provinsi.toString() ?? '', false, Icons.home_work),
-                buildTextField("Kabupaten/Kota",_profileMahasiswa!.kabupaten.toString() ?? '',false, Icons.home_work),
-                buildTextField("Kecamatan/Kota", _profileMahasiswa!.kecamatan.toString() ?? '', false, Icons.home_work),
-                buildTextField("Kelurahan/Desa", _profileMahasiswa!.kelurahanMahasiswa.toString() ?? '',false, Icons.home_work),
-                buildTextField("RT/RW", "${_profileMahasiswa!.rtMahasiswa.toString() ?? ''} / ${_profileMahasiswa!.rwMahasiswa.toString() ?? ''}", false, Icons.home_work),
+                buildTextField("Provinsi", _profileMahasiswa!.provinsi.toString() , false, Icons.home_work),
+                buildTextField("Kabupaten/Kota",_profileMahasiswa!.kabupaten.toString() ,false, Icons.home_work),
+                buildTextField("Kecamatan/Kota", _profileMahasiswa!.kecamatan.toString() , false, Icons.home_work),
+                buildTextField("Kelurahan/Desa", _profileMahasiswa!.kelurahanMahasiswa.toString() ,false, Icons.home_work),
+                buildTextField("RT/RW", "${_profileMahasiswa!.rtMahasiswa.toString()} / ${_profileMahasiswa!.rwMahasiswa.toString() }", false, Icons.home_work),
               ],
             ),
           ),
@@ -282,12 +259,12 @@ class _SiakProfileState extends State<SiakProfile> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              buildTextField("Nama Ayah", _profileMahasiswa!.namaAyah.toString() ?? '',false, Icons.man_rounded),
-              buildTextField("Nama Ibu", _profileMahasiswa!.namaIbu.toString() ?? '', false, Icons.woman),
-              buildTextField("Alamat Orangtua", _profileMahasiswa!.alamatOrtu.toString() ?? '', false, Icons.place),
-              buildTextField("Pekerjaan Ayah", _profileMahasiswa!.pekerjaanAyah.toString() ?? '', false, Icons.work),
-              buildTextField("Pekerjaan Ibu", _profileMahasiswa!.pekerjaanIbu.toString() ?? '', false, Icons.work),
-              buildTextField("Agama Orangtua", _profileMahasiswa!.agama.toString() ?? '', false, Icons.church),
+              buildTextField("Nama Ayah", _profileMahasiswa!.namaAyah.toString() ,false, Icons.man_rounded),
+              buildTextField("Nama Ibu", _profileMahasiswa!.namaIbu.toString() , false, Icons.woman),
+              buildTextField("Alamat Orangtua", _profileMahasiswa!.alamatOrtu.toString() , false, Icons.place),
+              buildTextField("Pekerjaan Ayah", _profileMahasiswa!.pekerjaanAyah.toString() , false, Icons.work),
+              buildTextField("Pekerjaan Ibu", _profileMahasiswa!.pekerjaanIbu.toString() , false, Icons.work),
+              buildTextField("Agama Orangtua", _profileMahasiswa!.agama.toString() , false, Icons.church),
             ],
           ),
         ),
@@ -300,60 +277,42 @@ class _SiakProfileState extends State<SiakProfile> {
   Widget buildTextField(String labelText, String value, bool isEditable, IconData iconData) {
     return Padding(
       padding: EdgeInsets.only(bottom: 15),
-      child: Row(
-        children: [
-          Icon(iconData),
-          SizedBox(width: 10),
-          Expanded(
-            child: TextFormField(
-              initialValue: value,
-              enabled: isEditable,
-              decoration: InputDecoration(
-                labelText: labelText,
-                floatingLabelBehavior: FloatingLabelBehavior.always,
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.grey[300], // Ganti dengan warna abu-abu yang diinginkan
+          borderRadius: BorderRadius.circular(10.0), // Atur radius border sesuai keinginan
+        ),
+        child: Row(
+          children: [
+            Icon(iconData),
+            SizedBox(width: 10),
+            Expanded(
+              child: TextFormField(
+                initialValue: value,
+                enabled: isEditable,
+                decoration: InputDecoration(
+                  labelText: labelText,
+                  labelStyle: TextStyle(color: SiakColors.SiakPrimary),
+                  floatingLabelBehavior: FloatingLabelBehavior.always,
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                  ),
+                  contentPadding: EdgeInsets.symmetric(vertical: 10),
+
+                ),
+
+                onChanged: (newValue) {
+                  // Update the corresponding value based on the label
+                  setState(() {
+                    // Kode onChanged seperti yang telah Anda tulis sebelumnya
+                  });
+                },
               ),
-              onChanged: (newValue) {
-                // Update the corresponding value based on the label
-                setState(() {
-                  if (labelText == 'Nama') {
-                    fullName = newValue;
-                  } else if (labelText == 'Tempat Lahir') {
-                    birthPlace = newValue;
-                  } else if (labelText == 'Tanggal Lahir') {
-                    birthDate = newValue;
-                  } else if (labelText == 'Jenis Kelamin') {
-                    gender = newValue;
-                  } else if (labelText == 'Agama') {
-                    religion = newValue;
-                  } else if (labelText == 'Provinsi') {
-                    province = newValue;
-                  } else if (labelText == 'Kabupaten/Kota') {
-                    city = newValue;
-                  } else if (labelText == 'Kecamatan/Kota') {
-                    subDistrict = newValue;
-                  } else if (labelText == 'Kelurahan/Desa') {
-                    village = newValue;
-                  } else if (labelText == 'RT/RW') {
-                    rtRw = newValue;
-                  } else if (labelText == 'Nama Ayah') {
-                    fatherName = newValue;
-                  } else if (labelText == 'Nama Ibu') {
-                    motherName = newValue;
-                  } else if (labelText == 'Alamat Orangtua') {
-                    parentAddress = newValue;
-                  } else if (labelText == 'Pekerjaan Ayah') {
-                    fatherOccupation = newValue;
-                  } else if (labelText == 'Pekerjaan Ibu') {
-                    motherOccupation = newValue;
-                  } else if (labelText == 'Agama Orangtua') {
-                    parentReligion = newValue;
-                  }
-                });
-              },
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
+
   }
 }

@@ -3,6 +3,8 @@ import 'package:siak/model/siak_models/user_model.dart';
 class ProfileMahasiswa extends User{
   int? npm;
   String? nama;
+  String? fakultas;
+  String? prodi;
   String? tempatLahir;
   DateTime? tanggalLahir;
   String? jenisKelamin;
@@ -19,10 +21,13 @@ class ProfileMahasiswa extends User{
   String? alamatOrtu;
   String? pekerjaanAyah;
   String? pekerjaanIbu;
+  String? foto;
 
   ProfileMahasiswa({
     this.npm,
     this.nama,
+    this.fakultas,
+    this.prodi,
     this.tempatLahir,
     this.tanggalLahir,
     this.jenisKelamin,
@@ -39,12 +44,15 @@ class ProfileMahasiswa extends User{
     this.alamatOrtu,
     this.pekerjaanAyah,
     this.pekerjaanIbu,
+    this.foto
   });
 
   factory ProfileMahasiswa.fromJson(Map<dynamic, dynamic> json) {
     return ProfileMahasiswa(
       npm: json['npm'],
       nama: json['nama'],
+      fakultas: json['fakultas'],
+      prodi: json['prodi'],
       tempatLahir: json['tmpt_lahir'],
       tanggalLahir: DateTime.parse(json['tgl_lahir']),
       jenisKelamin: json['jk'],
@@ -61,6 +69,7 @@ class ProfileMahasiswa extends User{
       alamatOrtu: json['alamat_ortu'],
       pekerjaanAyah: json['pekerjaan_ayah'],
       pekerjaanIbu: json['pekerjaan_ibu'],
+      foto:   json['foto'],
     );
   }
 }

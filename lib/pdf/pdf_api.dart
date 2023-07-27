@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/widgets.dart';
-import 'package:open_filex/open_filex.dart';
 
 class PdfApi {
   static Future<File> saveDocument({
@@ -22,7 +21,6 @@ class PdfApi {
 
   static Future openFile(File file) async {
     final url = file.path;
-    final result = await OpenFilex.open(url);
 
   }
 }

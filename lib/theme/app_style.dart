@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:siak/core/utils/color_constant.dart';
+import 'package:siak/core/utils/color_pallete.dart';
 import 'package:siak/core/utils/size_utils.dart';
 class AppStyle {
   static TextStyle txtPoppinsSemiBold16Yellow300 = TextStyle(
@@ -65,6 +66,15 @@ class AppStyle {
     fontWeight: FontWeight.w500,
   );
 
+  static TextStyle txtPoppinsMediumBlue12 = TextStyle(
+    color: SiakColors.SiakPrimary,
+    fontSize: getFontSize(
+      12,
+    ),
+    fontFamily: 'Poppins',
+    fontWeight: FontWeight.normal,
+  );
+
   static TextStyle txtPoppinsSemiBold16 = TextStyle(
     color: ColorConstant.black900,
     fontSize: getFontSize(
@@ -111,7 +121,7 @@ class AppStyle {
   );
 
   static TextStyle txtPoppinsMedium13Gray600 = TextStyle(
-    color: ColorConstant.gray600,
+    color: SiakColors.SiakWhite,
     fontSize: getFontSize(
       13,
     ),

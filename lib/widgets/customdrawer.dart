@@ -54,23 +54,41 @@ class _SiakDrawerState extends State<SiakDrawer> {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.only(top: 30),
+          padding: const EdgeInsets.only(top: 40),
           child: Container(
-            child: Center(
-              child: ImagePickerWidget(
-                diameter: 180,
-                initialImage: AssetImage('assets/images/siak_user.png'),
-                shape: ImagePickerWidgetShape.circle,
-                isEditable: true,
-                shouldCrop: true,
-                imagePickerOptions: ImagePickerOptions(imageQuality: 65),
-                onChange: (File file) {
-                  print("I changed the file to: ${file.path}");
+            width: 175,
+            height: 200,
+            decoration: BoxDecoration(
+              shape: BoxShape.rectangle,
+              border: Border.all(color: SiakColors.SiakPrimary, width: 2),
+              borderRadius: BorderRadius.circular(30.0),
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(30.0),
+              child:
+              Image.network(
+                _profileMahasiswa?.foto ?? '',
+                width: 175,
+                height: 200,
+                fit: BoxFit.fill,
+                errorBuilder: (context, error, stackTrace) {
+                  // Jika foto dari URL gagal dimuat, kita menggunakan gambar dari path lokal
+                  return Image.asset(
+                    'assets/images/siak_user.png',
+                    width: 175,
+                    height: 200,
+                    fit: BoxFit.cover,
+                  );
                 },
               ),
             ),
           ),
         ),
+
+
+
+
+
         Padding(
           padding: const EdgeInsets.only(top: 10),
           child: Container(
@@ -237,7 +255,7 @@ class _SiakDrawerState extends State<SiakDrawer> {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute<void>(
-                  builder: (BuildContext context) => SiakKRS(profileNama: widget.profileNama,profileNPM: widget.profileNpm,),
+                  builder: (BuildContext context) => SiakKRS(),
                 ),
               );
             },
@@ -402,14 +420,14 @@ class _SiakDrawerState extends State<SiakDrawer> {
       title: Text(
         "Logout",
         style: GoogleFonts.poppins(
-          textStyle: TextStyle(
+          textStyle: const TextStyle(
             color: SiakColors.SiakPrimary,
             fontSize: 13,
             fontWeight: FontWeight.bold,
           ),
         ),
       ),
-      leading: Icon(
+      leading: const Icon(
         Icons.exit_to_app,
         color: SiakColors.SiakPrimary,
       ),
@@ -430,7 +448,12 @@ class _SiakDrawerState extends State<SiakDrawer> {
           btnOkOnPress: () async {
             final prefs = await SharedPreferences.getInstance();
             final token = prefs.getString('token') ?? '';
-            _logout(token);
+            print(token);
+            await _clear(token);
+            print('sudah terhapus');
+
+            Navigator.of(context)
+                .pushNamedAndRemoveUntil('/LoginPage', (Route<dynamic> route) => false);
           },
           btnCancelOnPress: () {},
           headerAnimationLoop: true,
@@ -452,16 +475,9 @@ class _SiakDrawerState extends State<SiakDrawer> {
     await prefs.remove('token');
   }
 
-  Future<void> _logout(String token) async {
+  _clear(String token) async {
     await removeToken();
     await clearSharedPreferences();
-
-    Navigator.pushAndRemoveUntil(
-      widget.context,
-      MaterialPageRoute(
-        builder: (BuildContext context) => SiakLogin(),
-      ),
-          (route) => false,
-    );
   }
+
 }

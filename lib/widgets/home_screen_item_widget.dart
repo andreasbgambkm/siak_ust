@@ -1,13 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:siak/core/utils/image_constant.dart';
 import 'package:siak/core/utils/size_utils.dart';
+import 'package:siak/screen/berita/berita_terkini.dart';
 import 'package:siak/theme/app_decoration.dart';
 import 'package:siak/theme/app_style.dart';
 import 'package:siak/widgets/home_widgets/custom_image_view.dart';
 
 // ignore: must_be_immutable
 class HomeScreenItemWidget extends StatelessWidget {
-  HomeScreenItemWidget();
+  final String title;
+  final String description;
+  final String? url;
+
+  HomeScreenItemWidget({
+    required this.title,
+    required this.description,
+     this.url,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -44,61 +53,55 @@ class HomeScreenItemWidget extends StatelessWidget {
               ),
               Align(
                 alignment: Alignment.center,
-                child: Container(
-                  padding: getPadding(
-                    left: 13,
-                    top: 9,
-                    right: 13,
-                    bottom: 9,
-                  ),
-                  decoration: AppDecoration.fillBlack90084.copyWith(
-                    borderRadius: BorderRadiusStyle.roundedBorder10,
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Padding(
-                        padding: getPadding(
-                          left: 2,
-                          top: 12,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 10, right: 10, bottom: 5, top: 5),
+                  child: Container(
+
+                    decoration: AppDecoration.fillBlack90084.copyWith(
+                      borderRadius: BorderRadiusStyle.roundedBorder10,
+                    ),
+                    child: Column(
+
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(top: 3, left: 5, right: 5),
+                          child: Text(
+                            title,
+                            maxLines: 3,
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.left,
+                            style: AppStyle.txtPoppinsSemiBold16Yellow300,
+                          ),
                         ),
-                        child: Text(
-                          "",
-                          overflow: TextOverflow.ellipsis,
-                          textAlign: TextAlign.left,
-                          style: AppStyle.txtPoppinsSemiBold16Yellow300,
-                        ),
-                      ),
-                      Container(
-                        width: getHorizontalSize(
-                          305,
-                        ),
-                        margin: getMargin(
-                          left: 1,
-                          top: 11,
-                        ),
-                        child: Text(
-                          "",
-                          maxLines: null,
+                        Text(
+                         description,
+                           maxLines: 3,
                           textAlign: TextAlign.left,
                           style: AppStyle.txtPoppinsMedium16WhiteA700,
                         ),
-                      ),
-                      Padding(
-                        padding: getPadding(
-                          left: 2,
-                          top: 53,
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10,bottom: 10),
+                          child: InkWell(
+                            onTap: () {
+
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) =>  SiakNews(urlBerita: url,)),
+
+                              );
+                            },
+                            child: Text(
+                              "Baca Selengkapnya",
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.left,
+                              style: AppStyle.txtPoppinsMedium13Gray600,
+                            ),
+                          ),
                         ),
-                        child: Text(
-                          "Baca Selengkapnya...",
-                          overflow: TextOverflow.ellipsis,
-                          textAlign: TextAlign.left,
-                          style: AppStyle.txtPoppinsMedium14,
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),

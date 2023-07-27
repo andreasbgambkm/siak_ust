@@ -18,8 +18,8 @@ class SiakToogle extends StatelessWidget {
         GoogleFonts.poppins(fontWeight: FontWeight.bold,color: Colors.white),
         GoogleFonts.poppins(fontWeight: FontWeight.bold,color: Colors.white)
       ],
-      customWidths: [160.0, 150.0],
-      customHeights: [70,70],
+      customWidths: [MediaQuery.of(context).size.width/2.2, MediaQuery.of(context).size.width/2.2],
+      customHeights: [80,80],
       activeBgColor: [SiakColors.SiakPrimary],
 
       activeFgColor: Colors.white,

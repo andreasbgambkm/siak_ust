@@ -2,14 +2,29 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:siak/core/utils/color_pallete.dart';
 import 'package:siak/widgets/card.dart';
 import 'package:siak/widgets/footer.dart';
 import 'package:siak/widgets/tablecolumn.dart';
 
-class KuitansiTelahDibayar extends StatelessWidget {
-  const KuitansiTelahDibayar({key});
+class KuitansiTelahDibayarCard extends StatelessWidget {
+  final String? no_va;
+  final String? nama_jenis_bayar;
+  final String? ta;
+  final String? jml_bayar;
+  final String? status;
 
+  const KuitansiTelahDibayarCard({key, this.no_va, this.nama_jenis_bayar, this.ta, this.jml_bayar, this.status});
+
+  String formatCurrency(String amount) {
+    final currencyFormatter = NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ');
+    return currencyFormatter.format(double.parse(amount));
+  }
+
+  String getStatusText(String status) {
+    return status == "1" ? "Telah Dibayar" : "Belum Dibayar";
+  }
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -32,7 +47,7 @@ class KuitansiTelahDibayar extends StatelessWidget {
                   Column(children: [
                     Align(
                       alignment: Alignment.topLeft,
-                      child: Text("32810890232",style: GoogleFonts.poppins(fontWeight: FontWeight.w600,color: SiakColors.SiakBlueLight),),
+                      child: Text(no_va.toString(),style: GoogleFonts.poppins(fontWeight: FontWeight.w600,color: SiakColors.SiakBlueLight),),
                     )
                   ]),
 
@@ -41,26 +56,29 @@ class KuitansiTelahDibayar extends StatelessWidget {
                 ]),
                 TableRow(children: [
                   SiakTableColumn(textColumn: "Jenis Pembayaran"),
-                  SiakTableColumn(textColumn: "Uang Kuliah Pokok"),
+                  SiakTableColumn(textColumn: nama_jenis_bayar.toString()),
 
                 ]),
                 TableRow(children: [
                   SiakTableColumn(textColumn: "Tahun Ajaran"),
-                  SiakTableColumn(textColumn: "20201"),
+                  SiakTableColumn(textColumn: ta.toString()),
 
                 ]),
                 TableRow(children: [
                   SiakTableColumn(textColumn: "Jumlah Bayar"),
-                  SiakTableColumn(textColumn: "Rp 2.918.798"),
+                  SiakTableColumn(textColumn: formatCurrency(jml_bayar.toString())),
 
                 ]),
                 TableRow(children: [
+
+
+
                   SiakTableColumn(textColumn: "Status"),
 
                   Column(children: [
                     Align(
                       alignment: Alignment.topLeft,
-                      child: Text("Sudah Bayar",style: GoogleFonts.poppins(fontWeight: FontWeight.w600,color: SiakColors.SiakGreenDark),),
+                      child: Text(getStatusText(status.toString()),style: GoogleFonts.poppins(fontWeight: FontWeight.w600,color: SiakColors.SiakGreenDark),),
                     )
                   ]),
                 ]),
@@ -72,7 +90,7 @@ class KuitansiTelahDibayar extends StatelessWidget {
               ],
             ),),
 
-          Footer()
+
         ],
       ),
     );
